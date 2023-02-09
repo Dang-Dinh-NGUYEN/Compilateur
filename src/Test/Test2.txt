@@ -1,0 +1,7 @@
+PROGRAMME exemple;
+{hellooooooo}
+DEBUT
+    ECRIRE();
+    ECRIRE('Coucou');
+FIN
+
