@@ -1,7 +1,9 @@
 PROGRAMME exemple;
-{hellooooooo}
+{helloo{ll}ooooo}
+VAR x,y;
 DEBUT
     ECRIRE();
-    ECRIRE('Coucou');
+    ECRIRE('cou''cou');
+    x := 10 +y;
 FIN
 
