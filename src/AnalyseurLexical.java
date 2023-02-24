@@ -18,16 +18,16 @@ public class AnalyseurLexical {
     static final int NB_MOTS_RESERVES = 7;
     static final int MAXINT = 32767;
 
-    String SOURCE;
-    Character CARLU;
-    int NOMBRE;
-    String CHAINE;
-    int NUM_LIGNE = 0;
-    String[] TABLE_MOTS_RESERVES = new String[NB_MOTS_RESERVES];
+    static String SOURCE;
+    static Character CARLU;
+    static int NOMBRE;
+    static String CHAINE;
+    static int NUM_LIGNE = 0;
+    static String[] TABLE_MOTS_RESERVES = new String[NB_MOTS_RESERVES];
 
-    BufferedReader bf ;
+    static BufferedReader bf ;
 
-    public  void ERREUR(int n) {
+    public static void ERREUR(int n) {
         switch (n) {
             case 1:
                 System.out.println("fin de fichier atteinte _ ligne n°" + NUM_LIGNE);
@@ -44,7 +44,7 @@ public class AnalyseurLexical {
         }
     }
 
-    public  void LIRE_CAR() throws IOException {
+    public static void LIRE_CAR() throws IOException {
         int c = bf.read();
         if (c == -1)
             ERREUR(1);
@@ -53,7 +53,7 @@ public class AnalyseurLexical {
             NUM_LIGNE++;
     }
 
-    public  void SAUTER_SEPARATEURS() throws Exception {
+    public static void SAUTER_SEPARATEURS() throws Exception {
         while(CARLU == ' ' || CARLU == '\t' || CARLU == '\n' || CARLU == '\r') {
             LIRE_CAR();
         }
@@ -74,7 +74,7 @@ public class AnalyseurLexical {
     }
 
 
-    public T_UNILEX RECO_ENTIER() throws IOException {
+    public static T_UNILEX RECO_ENTIER() throws IOException {
         int n = 0;
         while (Character.isDigit(CARLU)) {
             n = n * 10 + (CARLU - '0');
@@ -91,7 +91,7 @@ public class AnalyseurLexical {
         return T_UNILEX.ent;
     }
 
-    public T_UNILEX RECO_CHAINE() throws IOException {
+    public static T_UNILEX RECO_CHAINE() throws IOException {
         //chaines imbriquées
         LIRE_CAR();
         while (CARLU != '\'') {
@@ -111,7 +111,7 @@ public class AnalyseurLexical {
     }
 
 
-    public T_UNILEX RECO_IDENT_OU_MOT_RESERVE() throws IOException {
+    public static T_UNILEX RECO_IDENT_OU_MOT_RESERVE() throws IOException {
         CHAINE = "";
         while (Character.isLetterOrDigit(CARLU) || CARLU == '_') {
             if (CHAINE.length() < LONG_MAX_IDENT) {
@@ -125,7 +125,7 @@ public class AnalyseurLexical {
     }
 
 
-    public boolean EST_UN_MOT_RESERVE(String chaine) {
+    public static boolean EST_UN_MOT_RESERVE(String chaine) {
         for (String motCle : TABLE_MOTS_RESERVES) {
             if (motCle.equals(chaine))
                 return true;
@@ -152,7 +152,7 @@ public class AnalyseurLexical {
     }
      */
 
-    public T_UNILEX RECO_SYMB() throws Exception {
+    public static T_UNILEX RECO_SYMB() throws Exception {
         switch (CARLU) {
             case ';':
                 System.out.print(CARLU + " >> ");
@@ -234,7 +234,7 @@ public class AnalyseurLexical {
         return null;
     }
 
-    public T_UNILEX ANALEX() throws Exception {
+    public static T_UNILEX ANALEX() throws Exception {
         CHAINE = "";
         // saute les séparateurs et commentaires
         SAUTER_SEPARATEURS();
@@ -249,7 +249,7 @@ public class AnalyseurLexical {
         return RECO_SYMB();
     }
 
-    public  void INITIALISER() {
+    public void INITIALISER() {
         NUM_LIGNE = 0;
         SOURCE = "C:\\Users\\Dang Dinh NGUYEN\\Documents\\L3_INFO\\S6\\Compilateur\\src\\Test\\Test2.txt";
         try {
