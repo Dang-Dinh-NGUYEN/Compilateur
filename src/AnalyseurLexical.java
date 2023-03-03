@@ -2,16 +2,7 @@ import java.io.*;
 
 public class AnalyseurLexical {
 
-    public AnalyseurLexical() throws FileNotFoundException {
-    }
-
-    /*
-    enum T_UNILEX {
-        motcle, ident, ent, ch, virg, ptvirg, point, deuxspts, parouv, parfer, inf, sup, eg,
-        plus, moins, mult, divi, infe, supe, diff, aff
-    }
-
-     */
+    public AnalyseurLexical() throws FileNotFoundException {}
 
     static final int LONG_MAX_IDENT = 20;
     static final int LONG_MAX_CHAINE = 50;
@@ -41,6 +32,8 @@ public class AnalyseurLexical {
             case 4:
                 System.out.println("invalide identificateur _ ligne n°" + NUM_LIGNE);
                 System.exit(0);
+            case 5:
+                System.out.println("ERREUR SYNTAXIQUE _ ligne n°" + NUM_LIGNE);
         }
     }
 
