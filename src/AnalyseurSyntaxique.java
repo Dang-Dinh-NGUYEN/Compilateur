@@ -12,7 +12,6 @@ public class AnalyseurSyntaxique {
                         UNILEX = AnalyseurLexical.ANALEX();
                     if(DECL_VAR())
                         UNILEX = AnalyseurLexical.ANALEX();
-                    System.out.println(UNILEX.name());
                     if(BLOC()){
                         UNILEX = AnalyseurLexical.ANALEX();
                         if(UNILEX == T_UNILEX.point) return true;
@@ -22,11 +21,11 @@ public class AnalyseurSyntaxique {
                     System.out.println("erreur syntaxique dans une instruction de déclaration d'une programme: BLOC attendu");
                     return false;
                 }else{
-                    System.out.println("//erreur syntaxique dans une instruction de déclaration d'une programme: ';' attendu");
+                    System.out.println("erreur syntaxique dans une instruction de déclaration d'une programme: ';' attendu");
                     return false;
                 }
             }else{
-                System.out.println("//erreur syntaxique dans une instruction de déclaration d'une programme: identificateur attendu");
+                System.out.println("erreur syntaxique dans une instruction de déclaration d'une programme: identificateur attendu");
                 return false;
             }
         }
@@ -73,7 +72,6 @@ public class AnalyseurSyntaxique {
                         }
                         if(erreur) return false; //erreur syntaxique dans une instruction de déclaration d'une constante: type de constante attendu
                         if(UNILEX == T_UNILEX.ptvirg){
-                            UNILEX = AnalyseurLexical.ANALEX();
                             return true;
                         }else{
                             return false; //erreur syntaxique dans une instruction de déclaration d'une constante: ';' attendu
@@ -117,7 +115,6 @@ public class AnalyseurSyntaxique {
                     return false; //erreur syntaxique dans une instruction de bloc: identificateur attendu
                 }
                 if(UNILEX == T_UNILEX.ptvirg){
-                    UNILEX = AnalyseurLexical.ANALEX();
                     return true;
                 }else{
                     return false; //erreur syntaxique dans une instruction de bloc: ';' attendu
@@ -135,15 +132,12 @@ public class AnalyseurSyntaxique {
         if(UNILEX == T_UNILEX.motcle && AnalyseurLexical.CHAINE.equals("DEBUT")){
             UNILEX = AnalyseurLexical.ANALEX();
             if(INSTRUCTION()){
-                UNILEX = AnalyseurLexical.ANALEX();
                 fin = false;
                 erreur = false;
                 while (!fin){
                     if(UNILEX == T_UNILEX.ptvirg){
                         UNILEX = AnalyseurLexical.ANALEX();
-                        if(INSTRUCTION()){
-                            UNILEX = AnalyseurLexical.ANALEX();
-                        }else{
+                        if(!INSTRUCTION()){
                             fin = true;
                             erreur = true;
                         }
@@ -167,7 +161,7 @@ public class AnalyseurSyntaxique {
                 return false;
             }
         }
-        System.out.println("erreur syntaxique dans une instruction de bloc: mot-clé 'DEBUT' attendu " + " " + AnalyseurLexical.CHAINE + " " + AnalyseurLexical.CARLU);
+        //System.out.println("erreur syntaxique dans une instruction de bloc: mot-clé 'DEBUT' attendu ");
         return false;
     }
 
@@ -240,30 +234,35 @@ public class AnalyseurSyntaxique {
                             UNILEX = AnalyseurLexical.ANALEX();
                             erreur = !(ECR_EXP());
                             if(erreur) fin = true;
+                        }else{
+                            fin = true;
                         }
-                        fin = true;
                     }
                 }
                 if(erreur){
-                    System.out.println("erreur syntaxique dans instruction d'écriture: expression incorrecte");
+                    //System.out.println("erreur syntaxique dans instruction d'écriture: expression incorrecte");
                     return false;
                 }
                 if(UNILEX == T_UNILEX.parfer){
                     UNILEX = AnalyseurLexical.ANALEX();
                     return true;
                 }
-                System.out.println("erreur syntaxique dans instruction d'écriture: ')' attendu");
+                //System.out.println("erreur syntaxique dans instruction d'écriture: ')' attendu " + UNILEX );
                 return false;
             }else{
-                System.out.println("erreur syntaxique dans instruction d'écriture: '(' attendu");
+                //System.out.println("erreur syntaxique dans instruction d'écriture: '(' attendu");
                 return false;
             }
         }
-        return false; //erreur syntaxique dans instruction d'écriture: mot-clé ECRIRE attendu
+        //System.out.println("erreur syntaxique dans instruction d'écriture: mot-clé ECRIRE attendu");
+        return false;
     }
 
     public static boolean ECR_EXP() throws Exception {
-        return EXP() || UNILEX == T_UNILEX.ch;
+        if(EXP() || UNILEX == T_UNILEX.ch){
+            return true;
+        }
+        return false;
     }
 
     public static boolean EXP() throws Exception {
@@ -271,7 +270,7 @@ public class AnalyseurSyntaxique {
             UNILEX = AnalyseurLexical.ANALEX();
             return SUITE_TERME();
         }
-        return false; //erreur syntaxique dans instruction d'expression: l'expression attendu
+        return false; //erreur syntaxique dans instruction d'EXP: l'expression attendu
     }
 
     public static boolean SUITE_TERME() throws Exception {
@@ -279,6 +278,7 @@ public class AnalyseurSyntaxique {
             UNILEX = AnalyseurLexical.ANALEX();
             return EXP();
         }
+        UNILEX = AnalyseurLexical.ANALEX();
         return true; //cas vide
     }
 
@@ -287,22 +287,35 @@ public class AnalyseurSyntaxique {
             UNILEX = AnalyseurLexical.ANALEX();
             return true;
         }
-        else if(UNILEX == T_UNILEX.parouv){
+        if(UNILEX == T_UNILEX.parouv){
             UNILEX = AnalyseurLexical.ANALEX();
-            if(!EXP()) return false; //erreur syntaxique dans instruction de TERME: EXP attendu
+            if(!EXP()){
+                System.out.println("erreur syntaxique dans instruction de TERME: EXP attendu");
+                return false;
+            }
             UNILEX = AnalyseurLexical.ANALEX();
-            if(UNILEX == T_UNILEX.parfer) return true;
-            return false; //erreur syntaxique dans instruction de TERME: ')' attendu
+            if(UNILEX == T_UNILEX.parfer){
+                UNILEX = AnalyseurLexical.ANALEX();
+                return true;
+            }
+            System.out.println("erreur syntaxique dans instruction de TERME: ')' attendu");
+            return false;
         }
-        else if(UNILEX == T_UNILEX.moins){
+        if(UNILEX == T_UNILEX.moins){
             UNILEX = AnalyseurLexical.ANALEX();
             return TERME();
         }
-        return false; //erreur syntaxique dans instruction de TERME: TERME attendu
+        //System.out.println("erreur syntaxique dans instruction de TERME: TERME attendu");
+        return false;
     }
 
-    public static boolean OP_BIN(){
-        return UNILEX == T_UNILEX.plus || UNILEX == T_UNILEX.moins || UNILEX == T_UNILEX.mult || UNILEX == T_UNILEX.divi;
+    public static boolean OP_BIN() throws Exception {
+        if(UNILEX == T_UNILEX.plus || UNILEX == T_UNILEX.moins || UNILEX == T_UNILEX.mult || UNILEX == T_UNILEX.divi){
+            UNILEX = AnalyseurLexical.ANALEX();
+            return true;
+        }
+        //erreur syntaxique dans instruction de OP_BIN: OP_BIN attendu
+        return false;
     }
 
     public static void ANASYNT() throws Exception {

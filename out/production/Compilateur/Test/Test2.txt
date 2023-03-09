@@ -3,7 +3,7 @@ PROGRAMME exemple;
 VAR x,y;
 DEBUT
     ECRIRE();
-    ECRIRE('cou''cou');
-    x := 10 +y;
+    ECRIRE('coucou');
+    x := 10 +y
 FIN
-
+.
