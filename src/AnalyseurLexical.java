@@ -80,6 +80,7 @@ public class AnalyseurLexical {
              ERREUR(4);
         NOMBRE = n;
 
+
         return T_UNILEX.ent;
     }
 
@@ -98,6 +99,7 @@ public class AnalyseurLexical {
 
         if(CHAINE.length() > LONG_MAX_CHAINE)
             ERREUR(3);
+        System.out.print(CHAINE + " >> ");
         return T_UNILEX.ch;
     }
 
@@ -111,6 +113,7 @@ public class AnalyseurLexical {
             LIRE_CAR();
         }
         CHAINE = CHAINE.toUpperCase();
+        System.out.print(CHAINE + " >> ");
         return EST_UN_MOT_RESERVE(CHAINE)? T_UNILEX.motcle : T_UNILEX.ident;
     }
 
@@ -145,58 +148,77 @@ public class AnalyseurLexical {
     public static T_UNILEX RECO_SYMB() throws Exception {
         switch (CARLU) {
             case ';':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.ptvirg;
             case ',':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.virg;
             case '.':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.point;
             case '(':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.parouv;
             case ')':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.parfer;
             case '<':
+                System.out.print(CARLU);
                 LIRE_CAR();
                 if (CARLU == '=') {
+                    System.out.print(CARLU + " >> ");
                     LIRE_CAR();
                     return T_UNILEX.infe;
                 }
                 else if (CARLU == '>'){
+                    System.out.print(CARLU + " >> ");
                     LIRE_CAR();
                     return T_UNILEX.diff;
                 }
                 else {
+                    System.out.print(" >> ");
                     return T_UNILEX.inf;
                 }
             case '>':
+                System.out.print(CARLU);
                 LIRE_CAR();
                 if (CARLU == '=') {
+                    System.out.print(CARLU + " >> ");
                     LIRE_CAR();
                     return T_UNILEX.supe;
                 }
+                System.out.print(" >> ");
                 return T_UNILEX.sup;
             case '=':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.eg;
             case '+':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.plus;
             case '-':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.moins;
             case '*':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.mult;
             case '/':
+                System.out.print(CARLU + " >> ");
                 LIRE_CAR();
                 return T_UNILEX.divi;
             case ':':
+                System.out.print(CARLU);
                 LIRE_CAR();
                 if (CARLU == '=') {
+                    System.out.print(CARLU + " >> ");
                     LIRE_CAR();
                     return T_UNILEX.aff;
                 }
@@ -236,20 +258,6 @@ public class AnalyseurLexical {
             bf.close();
     }
 
-    public static void display(T_UNILEX token){
-        switch (token){
-            case motcle:
-                System.out.print(CHAINE + " >> " + T_UNILEX.motcle);
-            case ident:
-                System.out.print(CHAINE + " >> " + T_UNILEX.ident);
-            case ent:
-                System.out.print(NOMBRE + " >> " + T_UNILEX.ent);
-            case ch:
-                System.out.print(CHAINE + " >> " + T_UNILEX.ch);
-            default:
-                System.out.print(CARLU + " >> " + token);
-        }
-    }
 
     public static void main(String[] args) throws Exception {
         AnalyseurLexical analyseurLexical = new AnalyseurLexical();
@@ -259,8 +267,7 @@ public class AnalyseurLexical {
         while (analyseurLexical.CARLU != -1)
         {
             T_UNILEX token = analyseurLexical.ANALEX();
-            System.out.println(token);
-            //analyseurLexical.display(token);
+            System.out.println(token + " ");
         }
 
         analyseurLexical.TERMINER();
